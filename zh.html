@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>After Dark Pyro — 南昌烟花实业</title>
+<meta name="description" content="烟花制造、出口与无人机灯光表演 — 南昌烟花实业，中国湖南浏阳。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#050505;
+    --bg-alt:#0c0c0d;
+    --ink:#f5f5f7;
+    --ink-dim:#86868b;
+    --ink-faint:#525254;
+    --ember:#e8a13c;
+    --drone:#5aa8e8;
+    --problem:#d9765c;
+    --line:rgba(255,255,255,0.10);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:'Inter','PingFang SC','Microsoft YaHei',-apple-system,sans-serif;
+    line-height:1.7; overflow-x:hidden; font-weight:400;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 24px;}
+  .wrap-wide{max-width:1400px; margin:0 auto; padding:0 24px;}
+  section{position:relative;}
+  h1,h2,h3,h4{font-weight:800; letter-spacing:-0.02em; line-height:1.05;}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:rgba(5,5,5,0.72); backdrop-filter:blur(20px) saturate(1.8);
+    border-bottom:1px solid var(--line);
+  }
+  nav{max-width:1400px; margin:0 auto; padding:0 24px; height:52px; display:flex; align-items:center; justify-content:space-between;}
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand .logo-chip{height:26px; width:26px; background:#fff; border-radius:6px; display:flex; align-items:center; justify-content:center; overflow:hidden;}
+  .brand .logo-chip img{height:22px; width:22px; object-fit:contain;}
+  .brand-text{font-size:14px; font-weight:600; letter-spacing:-0.01em;}
+  .navlinks{display:flex; gap:28px; align-items:center;}
+  .navlinks a{font-size:12px; color:var(--ink-dim); font-weight:500; transition:color .2s;}
+  .navlinks a:hover{color:var(--ink);}
+  .nav-cta{background:var(--ink); color:var(--bg)!important; padding:7px 16px; border-radius:980px; font-size:12px!important; font-weight:600;}
+  .nav-cta:hover{background:var(--ember)!important;}
+  .burger{display:none;}
+
+  /* ---------- MOBILE MENU ---------- */
+  .burger{flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:6px; z-index:110;}
+  .burger span{width:22px; height:2px; background:var(--ink); border-radius:2px; transition:transform .25s ease, opacity .2s ease;}
+  .burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .burger.open span:nth-child(2){opacity:0;}
+  .burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+  /* ---------- LANGUAGE SWITCHER ---------- */
+  .lang-switch{position:relative;}
+  .lang-trigger{
+    background:none; border:1px solid var(--line); color:var(--ink-dim);
+    font-size:12px; padding:6px 12px; border-radius:980px; cursor:pointer;
+    display:flex; align-items:center; gap:5px; font-family:inherit; font-weight:500;
+    transition:color .2s, border-color .2s;
+  }
+  .lang-trigger:hover{color:var(--ink); border-color:var(--ink-dim);}
+  .lang-trigger svg{width:9px; height:9px; transition:transform .2s;}
+  .lang-switch.open .lang-trigger svg{transform:rotate(180deg);}
+  .lang-menu{
+    position:absolute; top:calc(100% + 10px); right:0; background:var(--bg-alt);
+    border:1px solid var(--line); border-radius:12px; padding:6px; min-width:150px;
+    display:none; flex-direction:column; gap:2px; box-shadow:0 16px 40px rgba(0,0,0,0.55);
+    z-index:200;
+  }
+  .lang-switch.open .lang-menu{display:flex;}
+  .lang-menu a{padding:9px 12px; border-radius:8px; font-size:13px; color:var(--ink-dim); display:flex; justify-content:space-between; align-items:center;}
+  .lang-menu a:hover{background:rgba(255,255,255,0.07); color:var(--ink);}
+  .lang-menu a.lang-active{color:var(--ember); font-weight:600;}
+  .lang-menu a.lang-active::after{content:'✓'; font-size:11px;}
+
+  /* ---------- HERO ---------- */
+  .hero{min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; position:relative; padding:120px 24px 60px; overflow:hidden;}
+  .hero-bg{position:absolute; inset:0; z-index:0;}
+  .hero-bg img{width:100%; height:100%; object-fit:cover; filter:brightness(0.5);}
+  .hero-bg::after{content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(5,5,5,0.5) 0%, rgba(5,5,5,0.15) 45%, var(--bg) 100%);}
+  .hero-inner{position:relative; z-index:2; max-width:900px;}
+  .hero-eyebrow{font-size:14px; font-weight:600; color:var(--ink-dim); margin-bottom:16px; letter-spacing:0.01em;}
+  .hero h1{font-size:clamp(40px,7vw,88px); letter-spacing:-0.03em; margin-bottom:20px;}
+  .hero h1 .accent{background:linear-gradient(90deg, var(--ember), var(--drone)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .hero p{font-size:clamp(17px,2vw,22px); color:var(--ink-dim); max-width:620px; margin:0 auto 34px; font-weight:400;}
+  .hero-cta{display:flex; gap:28px; align-items:center; justify-content:center; flex-wrap:wrap;}
+  .pill-btn{background:var(--ember); color:#1a1204; padding:13px 26px; border-radius:980px; font-size:15px; font-weight:600;}
+  .pill-btn:hover{opacity:0.85;}
+  .text-link{font-size:15px; font-weight:500; color:var(--drone); display:inline-flex; align-items:center; gap:4px;}
+  .text-link:hover{opacity:0.8;}
+  em.accent-em{font-style:italic; color:var(--ember); font-weight:800;}
+  em.accent-em.blue{color:var(--drone);}
+  em.accent-em.problem{color:var(--problem);}
+
+  /* ---------- PROBLEM / SOLUTION ---------- */
+  .pain-list{margin-top:32px; max-width:620px;}
+  .pain-item{display:flex; align-items:baseline; gap:14px; padding:15px 0; border-top:1px solid var(--line); font-size:15.5px; color:var(--ink-dim);}
+  .pain-item:last-child{border-bottom:1px solid var(--line);}
+  .pain-item .x{color:var(--problem); font-weight:800; font-size:14px; flex-shrink:0;}
+  .resolve-line{margin-top:30px; font-size:20px; font-weight:600; color:var(--ink); max-width:620px; line-height:1.4;}
+  .resolve-line b{color:var(--ember); font-style:italic;}
+
+  /* ---------- HOW IT WORKS ---------- */
+  .process-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:2px; background:var(--line); border:1px solid var(--line); margin-top:20px;}
+  .process-card{background:var(--bg); padding:36px 32px 40px;}
+  .process-num{font-size:13px; font-weight:800; color:var(--ink-faint); margin-bottom:18px; letter-spacing:0.02em;}
+  .process-card h4{font-size:21px; margin-bottom:12px; letter-spacing:-0.01em;}
+  .process-card p{color:var(--ink-dim); font-size:14.5px; margin-bottom:20px;}
+  .process-payoff{font-size:14px; font-style:italic; color:var(--ember); font-weight:600;}
+
+  /* ---------- TRUST MARQUEE ---------- */
+  .marquee{overflow:hidden; position:relative; margin-top:44px;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);}
+  .marquee-track{display:flex; gap:14px; width:max-content; animation:marqueeScroll 32s linear infinite;}
+  .marquee:hover .marquee-track{animation-play-state:paused;}
+  @keyframes marqueeScroll{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+  .marquee-chip{background:var(--bg-alt); border:1px solid var(--line); border-radius:980px; padding:14px 24px; white-space:nowrap; display:flex; align-items:baseline; gap:8px; flex-shrink:0;}
+  .marquee-chip .mc-val{font-weight:800; font-size:16px;}
+  .marquee-chip .mc-lbl{font-size:11.5px; color:var(--ink-dim);}
+
+  /* ---------- QUICK NAV PILLS ---------- */
+  .quicknav{position:sticky; top:52px; z-index:60; background:rgba(5,5,5,0.85); backdrop-filter:blur(16px); border-bottom:1px solid var(--line);}
+  .quicknav::after{content:''; position:absolute; top:0; right:0; bottom:0; width:40px; background:linear-gradient(90deg, transparent, rgba(5,5,5,0.92)); pointer-events:none;}
+  .quicknav-inner{max-width:1400px; margin:0 auto; padding:0 24px; display:flex; gap:6px; overflow-x:auto; scrollbar-width:none;}
+  .quicknav-inner::-webkit-scrollbar{display:none;}
+  .quicknav a{font-size:13px; color:var(--ink-dim); padding:14px 16px; white-space:nowrap; font-weight:500; border-bottom:2px solid transparent; transition:color .2s;}
+  .quicknav a:hover{color:var(--ink);}
+
+  /* ---------- CHAPTER (full section, one idea) ---------- */
+  .chapter{padding:120px 0;}
+  .chapter.tight{padding:90px 0;}
+  .chapter-alt{background:var(--bg-alt);}
+  .kicker{font-size:14px; font-weight:600; color:var(--ember); margin-bottom:14px;}
+  .kicker.blue{color:var(--drone);}
+  .chapter h2{font-size:clamp(32px,5vw,58px); margin-bottom:18px; max-width:760px;}
+  .chapter .sub{font-size:clamp(16px,1.8vw,19px); color:var(--ink-dim); max-width:600px; margin-bottom:0; font-weight:400;}
+  .chapter-head{margin-bottom:64px;}
+  .chapter-head.center{text-align:center; margin-left:auto; margin-right:auto;}
+  .chapter-head.center h2, .chapter-head.center .sub{margin-left:auto; margin-right:auto;}
+
+  /* badge chips */
+  .badges{display:flex; gap:10px; flex-wrap:wrap; margin-top:28px;}
+  .badge{background:rgba(255,255,255,0.06); border:1px solid var(--line); padding:9px 16px; border-radius:980px; font-size:13.5px; font-weight:500; color:var(--ink);}
+  .badge b{color:var(--ember); font-weight:700;}
+  .badge.blue b{color:var(--drone);}
+
+  /* ---------- FULL BLEED MEDIA MOMENT (Dragy-style single feature) ---------- */
+  .moment{padding:100px 0;}
+  .moment-media{width:100%; border-radius:20px; overflow:hidden; margin-bottom:48px; aspect-ratio:16/8.5;}
+  .moment-media img{width:100%; height:100%; object-fit:cover;}
+  .moment-text{max-width:640px;}
+  .moment-text.center{max-width:700px; margin:0 auto; text-align:center;}
+  .moment-text h3{font-size:clamp(26px,3.4vw,36px); margin-bottom:14px;}
+  .moment-text p{color:var(--ink-dim); font-size:16.5px;}
+
+  /* ---------- GROUP DIVISIONS: full stacked chapters ---------- */
+  .division{display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; padding:80px 0; border-bottom:1px solid var(--line);}
+  .division:last-child{border-bottom:none;}
+  .division.reverse{direction:rtl;}
+  .division.reverse > *{direction:ltr;}
+  .division-media{border-radius:18px; overflow:hidden; aspect-ratio:5/4;}
+  .division-media img{width:100%; height:100%; object-fit:cover;}
+  .division-num{font-size:13px; font-weight:700; color:var(--ink-faint); margin-bottom:12px; letter-spacing:0.02em;}
+  .division-text h3{font-size:clamp(24px,3vw,34px); margin-bottom:12px;}
+  .division-text p{color:var(--ink-dim); font-size:15.5px; margin-bottom:20px;}
+  .division-text .div-badges{display:flex; gap:8px; flex-wrap:wrap;}
+  .division-text .div-badges span{font-size:12.5px; background:rgba(255,255,255,0.06); border:1px solid var(--line); padding:6px 12px; border-radius:980px; color:var(--ink-dim);}
+
+  /* ---------- PILLARS (2 main businesses) ---------- */
+  .pillar-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  .pillar-card{display:block; border-radius:20px; overflow:hidden; background:var(--bg-alt); transition:transform .3s ease;}
+  .pillar-card:hover{transform:translateY(-4px);}
+  .pillar-media{aspect-ratio:16/11; overflow:hidden;}
+  .pillar-media img{width:100%; height:100%; object-fit:cover; transition:transform .5s ease;}
+  .pillar-card:hover .pillar-media img{transform:scale(1.04);}
+  .pillar-body{padding:32px 32px 36px;}
+  .pillar-num{font-size:13px; font-weight:800; color:var(--ember); margin-bottom:10px; letter-spacing:0.04em;}
+  .pillar-num.blue{color:var(--drone);}
+  .pillar-card h3{font-size:clamp(24px,2.8vw,32px); margin-bottom:10px;}
+  .pillar-card p{color:var(--ink-dim); font-size:15px; margin-bottom:18px;}
+
+  /* ---------- SUB-BRANDS (under Fireworks) ---------- */
+  .subbrand-head{font-size:13px; font-weight:600; color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:24px;}
+  .subbrand-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+  .subbrand-card{background:var(--bg); border-radius:14px; overflow:hidden; border:1px solid var(--line);}
+  .subbrand-media{aspect-ratio:4/3; overflow:hidden;}
+  .subbrand-media img{width:100%; height:100%; object-fit:cover; filter:brightness(0.85);}
+  .subbrand-card .subbrand-num{font-size:10.5px; font-weight:700; color:var(--ember); letter-spacing:0.06em; padding:14px 16px 0;}
+  .subbrand-card h4{font-size:16px; font-weight:700; padding:4px 16px 0; margin-bottom:4px;}
+  .subbrand-card p{font-size:12.5px; color:var(--ink-dim); padding:0 16px 16px;}
+
+  /* ---------- CATALOG (Apple-style product grid, fewer bigger) ---------- */
+  .catalog-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .catalog-card{border-radius:18px; overflow:hidden; background:var(--bg-alt); position:relative; aspect-ratio:1/1.05;}
+  .catalog-card img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(0.75); transition:transform .5s ease, filter .3s ease;}
+  .catalog-card:hover img{transform:scale(1.05); filter:brightness(0.55);}
+  .catalog-card::before{content:''; position:absolute; inset:0; background:linear-gradient(180deg, transparent 40%, rgba(5,5,5,0.9) 100%); z-index:1;}
+  .catalog-card-info{position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:flex-end; padding:24px;}
+  .catalog-card-info .cc-tag{font-size:12px; color:var(--ember); font-weight:600; margin-bottom:6px;}
+  .catalog-card-info h4{font-size:19px; font-weight:700; margin-bottom:4px;}
+  .catalog-card-info .cc-sub{font-size:13px; color:var(--ink-dim);}
+  .catalog-more{text-align:center; margin-top:40px;}
+
+  /* ---------- COMPLIANCE ICON WALL ---------- */
+  .trust-wall{display:flex; flex-wrap:wrap; gap:14px; justify-content:center;}
+  .trust-chip{
+    background:var(--bg-alt); border:1px solid var(--line); border-radius:16px;
+    padding:22px 28px; text-align:center; min-width:150px;
+  }
+  .trust-chip .tc-val{font-size:22px; font-weight:800; margin-bottom:4px;}
+  .trust-chip .tc-lbl{font-size:12px; color:var(--ink-dim); letter-spacing:0.02em;}
+
+  /* ---------- COMPARISON TABLE (Dragy tier-select style) ---------- */
+  .compare-wrap{overflow-x:auto;}
+  .compare-table{width:100%; border-collapse:collapse; min-width:820px;}
+  .compare-table th{
+    text-align:left; padding:20px 20px 24px; vertical-align:top; border-bottom:1px solid var(--line);
+  }
+  .compare-table th .plan-name{font-size:19px; font-weight:800; margin-bottom:6px; display:block;}
+  .compare-table th .plan-desc{font-size:12.5px; color:var(--ink-dim); font-weight:400; display:block; line-height:1.4;}
+  .compare-table th:first-child{min-width:180px;}
+  .compare-table td{padding:16px 20px; border-bottom:1px solid var(--line); font-size:13.5px; color:var(--ink-dim);}
+  .compare-table td:first-child{color:var(--ink); font-weight:500; font-size:13.5px;}
+  .compare-table tr:last-child td{border-bottom:none;}
+  .check{color:var(--ember); font-weight:700;}
+  .check.blue{color:var(--drone);}
+  .dash{color:var(--ink-faint);}
+  .plan-highlight{background:rgba(232,161,60,0.06);}
+
+  /* ---------- GALLERY (filmstrip) ---------- */
+  .filmstrip{display:flex; gap:16px; overflow-x:auto; padding-bottom:8px; scrollbar-width:none;}
+  .filmstrip::-webkit-scrollbar{display:none;}
+  .filmstrip img{height:420px; width:auto; border-radius:16px; object-fit:cover; flex-shrink:0;}
+  .filmstrip img.wide{aspect-ratio:16/10;}
+  .filmstrip img.tall{aspect-ratio:3/4;}
+
+  /* ---------- CONTACT ---------- */
+  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:64px;}
+  .contact-info h2{font-size:clamp(30px,4vw,44px); margin-bottom:18px;}
+  .contact-info p{color:var(--ink-dim); font-size:16px; margin-bottom:36px; max-width:440px;}
+  .cline{padding:16px 0; border-top:1px solid var(--line); display:flex; gap:16px;}
+  .cline:last-of-type{border-bottom:1px solid var(--line); margin-bottom:28px;}
+  .cline .k{font-size:12px; color:var(--ink-faint); width:80px; flex-shrink:0; padding-top:2px;}
+  .cline .v{font-size:15px;}
+  .cline a.v:hover{color:var(--ember);}
+  .field{margin-bottom:18px;}
+  .field label{display:block; font-size:12px; color:var(--ink-dim); margin-bottom:7px;}
+  .field input, .field select, .field textarea{
+    width:100%; background:var(--bg-alt); border:1px solid var(--line); color:var(--ink);
+    padding:12px 14px; font-family:'Inter'; font-size:14px; border-radius:10px;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{outline:none; border-color:var(--ember);}
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .submit-btn{background:var(--ember); color:#1a1204; border:none; padding:14px; border-radius:10px; font-weight:700; font-size:14.5px; width:100%; cursor:pointer;}
+
+  footer{border-top:1px solid var(--line); padding:32px 0;}
+  footer .wrap-wide{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;}
+  footer .fmark{font-size:12.5px; color:var(--ink-faint);}
+
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .8s ease, transform .8s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  @media (max-width: 880px){
+    .navlinks{display:none;}
+    .division, .division.reverse{grid-template-columns:1fr; direction:ltr;}
+    .pillar-grid{grid-template-columns:1fr;}
+    .subbrand-grid{grid-template-columns:repeat(2,1fr);}
+    .catalog-grid{grid-template-columns:repeat(2,1fr);}
+    .compare-table{min-width:680px;}
+    .contact-grid{grid-template-columns:1fr;}
+    .field-row{grid-template-columns:1fr;}
+    .chapter{padding:70px 0;}
+    .moment{padding:60px 0;}
+    .burger{display:flex;}
+    .navlinks.mobile-open{
+      display:flex; position:fixed; top:52px; left:0; right:0; height:calc(100vh - 52px);
+      background:var(--bg); flex-direction:column; align-items:stretch;
+      padding:20px 24px 40px; gap:0; overflow-y:auto; z-index:105;
+    }
+    .navlinks.mobile-open a{padding:16px 4px; font-size:17px; border-bottom:1px solid var(--line); color:var(--ink);}
+    .navlinks.mobile-open .nav-cta{margin-top:20px; text-align:center; padding:15px; border-radius:980px;}
+    .navlinks.mobile-open .lang-switch{margin:16px 0; align-self:flex-start;}
+    .navlinks.mobile-open .lang-menu{position:static; display:flex; margin-top:10px; box-shadow:none; border:none; padding:0; background:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="#top" class="brand">
+      <span class="logo-chip"><img src="images/logo.png" alt="After Dark Pyro"></span>
+      <span class="brand-text">After Dark Pyro</span>
+    </a>
+    <div class="navlinks">
+      <a href="#group">集团</a>
+      <a href="#drone">无人机表演</a>
+      <a href="#fireworks">烟花</a>
+      <a href="#catalog">产品目录</a>
+      <a href="#compare">方案对比</a>
+      <div class="lang-switch" id="langSwitch">
+        <button type="button" class="lang-trigger" id="langTrigger">中文 <svg viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5"/></svg></button>
+        <div class="lang-menu">
+          <a href="index.html">English</a>
+          <a href="zh.html" class="lang-active">中文</a>
+          <a href="es.html">Español</a>
+          <a href="fr.html">Français</a>
+        </div>
+      </div>
+      <a href="#contact" class="nav-cta">获取报价</a>
+    </div>
+    <button type="button" class="burger" id="burgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero-bg"><img src="images/drone_hero.jpg" alt="Drone light show and fireworks, Marina Bay Sands"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">南昌烟花实业 · 中国湖南浏阳</div>
+    <h1>烟花。光影。<br><em class="accent-em">精准编排</em>，稳定交付。</h1>
+    <p>一家跨越五个专业分支的烟花集团——制造、全球出口与无人机灯光表演，扎根世界烟花之都35年。</p>
+    <div class="hero-cta">
+      <a href="#group" class="pill-btn">了解集团</a>
+      <a href="#contact" class="text-link">获取报价 →</a>
+    </div>
+  </div>
+</section>
+
+<div class="quicknav">
+  <div class="quicknav-inner">
+    <a href="#problem">为什么选我们</a>
+    <a href="#group">集团</a>
+    <a href="#drone">无人机表演</a>
+    <a href="#fireworks">烟花出口</a>
+    <a href="#catalog">产品目录</a>
+    <a href="#compliance">资质认证</a>
+    <a href="#process">合作流程</a>
+    <a href="#compare">方案对比</a>
+    <a href="#gallery">案例展示</a>
+    <a href="#contact">联系我们</a>
+  </div>
+</div>
+
+<section class="chapter chapter-alt" id="problem">
+  <div class="wrap">
+    <div class="chapter-head reveal">
+      <div class="kicker problem" style="color:var(--problem);">买家为什么选我们</div>
+      <h2>从中国采购是<em class="accent-em problem">一片雷区</em>。我们建这个集团，就是为了排雷。</h2>
+      <div class="pain-list">
+        <div class="pain-item"><span class="x">✕</span> 定金打过去，工厂就失联了。</div>
+        <div class="pain-item"><span class="x">✕</span> 走了几个月，文件在海关卡壳。</div>
+        <div class="pain-item"><span class="x">✕</span> 无人机表演没有真正的安全记录可查。</div>
+      </div>
+      <div class="resolve-line">五个自有分支。<b>一支负责到底的团队。</b>没有外包出去的风险。</div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="group">
+  <div class="wrap">
+    <div class="chapter-head reveal">
+      <div class="kicker">集团</div>
+      <h2>两大业务，<em class="accent-em">一个负责到底的集团。</em></h2>
+      <p class="sub">集团始创于1990年，是中国最早一批获得自主进出口权的企业之一。集团旗下所有业务都归属于这两大板块之一。</p>
+    </div>
+    <div class="pillar-grid reveal">
+      <a href="#drone" class="pillar-card">
+        <div class="pillar-media"><img src="images/drone_hero.jpg" alt="Drone light show performance, Marina Bay Sands"></div>
+        <div class="pillar-body">
+          <div class="pillar-num blue">01</div>
+          <h3>无人机表演</h3>
+          <p>编队灯光表演 — 南京摩登航空，集团旗下的空中技术板块。</p>
+          <span class="text-link">了解无人机表演 ↓</span>
+        </div>
+      </a>
+      <a href="#fireworks" class="pillar-card">
+        <div class="pillar-media"><img src="https://images.pexels.com/photos/33851784/pexels-photo-33851784.jpeg?auto=compress&cs=tinysrgb&w=1100" alt="Fireworks manufacturing and export"></div>
+        <div class="pillar-body">
+          <div class="pillar-num">02</div>
+          <h3>烟花</h3>
+          <p>制造与出口 — 四个专业品牌，一条供应链，从浏阳走向世界。</p>
+          <span class="text-link">了解烟花业务 ↓</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="chapter chapter-alt moment" id="drone">
+  <div class="wrap reveal">
+    <div class="moment-media"><img src="images/drone_westin.jpg" alt="Drone light show formation over the Westin hotel"></div>
+    <div class="kicker blue">01 — 无人机表演</div>
+    <h2>编队飞行，<em class="accent-em blue">厘米级精准控制</em>。</h2>
+    <p class="sub">基于ECO表演无人机平台 — 可独立飞行，也可与烟花终章实时联动。</p>
+    <div class="badges">
+      <span class="badge blue">定位系统 <b>GPS · GLONASS · 伽利略 · 北斗</b></span>
+      <span class="badge blue">精度 <b>±5厘米</b></span>
+      <span class="badge blue">飞行时长 <b>25分钟</b></span>
+      <span class="badge blue">安全保障 <b>地理围栏</b></span>
+    </div>
+    <div class="hero-cta" style="justify-content:flex-start; margin-top:36px;">
+      <a href="#contact" class="pill-btn">咨询演出方案</a>
+      <a href="#compare" class="text-link">对比无人机方案 →</a>
+    </div>
+  </div>
+
+  <div class="wrap reveal" style="margin-top:90px;">
+    <div class="subbrand-head">每场演出背后</div>
+    <div class="subbrand-grid">
+      <div class="subbrand-card">
+        <div class="subbrand-media"><img src="images/drone_control_station.jpg" alt="Ground control station operating a drone swarm"></div>
+        <div class="subbrand-num">地面控制</div>
+        <h4>实时飞行操作</h4>
+        <p>现场团队实时飞行与监控。</p>
+      </div>
+      <div class="subbrand-card">
+        <div class="subbrand-media"><img src="images/drone_takeoff.jpg" alt="Drone launching from the field"></div>
+        <div class="subbrand-num">部署起飞</div>
+        <h4>现场起飞</h4>
+        <p>占地小，起飞紧凑高效。</p>
+      </div>
+      <div class="subbrand-card">
+        <div class="subbrand-media"><img src="images/drone_deploy_gold.jpg" alt="Drone units staged before a show, Macau skyline"></div>
+        <div class="subbrand-num">演出前准备</div>
+        <h4>演出前整备</h4>
+        <p>全部机队通电待命。</p>
+      </div>
+      <div class="subbrand-card">
+        <div class="subbrand-media"><img src="images/drone_swarm_fly.jpg" alt="Drone swarm forming a pattern mid-flight"></div>
+        <div class="subbrand-num">编队飞行</div>
+        <h4>编队飞行中</h4>
+        <p>编排好的编队飞行，演出进行中。</p>
+      </div>
+      <div class="subbrand-card">
+        <div class="subbrand-media"><img src="images/drone_daylight_array.jpg" alt="Daylight rehearsal of a large drone array"></div>
+        <div class="subbrand-num">彩排</div>
+        <h4>日间彩排</h4>
+        <p>每场夜间演出前的全机队测试。</p>
+      </div>
+      <div class="subbrand-card">
+        <div class="subbrand-media"><img src="images/drone_plaza_layout.jpg" alt="Flexible drone case layout fitted to an irregular plaza"></div>
+        <div class="subbrand-num">场地适配</div>
+        <h4>适配任意场地</h4>
+        <p>模块化机箱灵活适配不规则场地。</p>
+      </div>
+      <div class="subbrand-card">
+        <div class="subbrand-media"><img src="images/drone_stadium_rows1.jpg" alt="Stadium-scale drone deployment at night"></div>
+        <div class="subbrand-num">规模</div>
+        <h4>体育场级规模</h4>
+        <p>从数百架到1000+架均可部署。</p>
+      </div>
+      <div class="subbrand-card">
+        <div class="subbrand-media"><img src="images/drone_campus_hands.jpg" alt="Custom drone formation shaped like hands and a figure"></div>
+        <div class="subbrand-num">编排设计</div>
+        <h4>定制编队造型</h4>
+        <p>任意造型，从需求到飞行方案。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap reveal" style="margin-top:90px;">
+    <div class="subbrand-head">全球现场团队</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+      <div style="border-radius:18px; overflow:hidden; aspect-ratio:4/3;"><img src="images/drone_team_seasia.jpg" alt="Flight crew on deployment in Southeast Asia" style="width:100%; height:100%; object-fit:cover;"></div>
+      <div style="border-radius:18px; overflow:hidden; aspect-ratio:4/3;"><img src="images/drone_team_singapore.jpg" alt="Flight crew on deployment in Singapore, Marina Bay" style="width:100%; height:100%; object-fit:cover;"></div>
+    </div>
+    <p style="margin-top:20px; color:var(--ink-dim); font-size:14px;">飞行团队奔赴东南亚与新加坡等地执行演出 — 为您的项目飞行的，就是这支团队。</p>
+  </div>
+
+  <div class="wrap reveal" style="margin-top:90px;">
+    <div class="subbrand-head">南京自产自造</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+      <div style="border-radius:18px; overflow:hidden; aspect-ratio:4/3;"><img src="images/factory_assembly1.jpg" alt="Drone assembly line, Nanjing" style="width:100%; height:100%; object-fit:cover;"></div>
+      <div style="border-radius:18px; overflow:hidden; aspect-ratio:4/3;"><img src="images/factory_assembly2.jpg" alt="Hand assembly of drone units, Nanjing" style="width:100%; height:100%; object-fit:cover;"></div>
+    </div>
+    <p style="margin-top:20px; color:var(--ink-dim); font-size:14px;">每一台机器都经过手工组装与测试，才会发往项目现场。</p>
+  </div>
+</section>
+
+<section class="chapter moment" id="fireworks">
+  <div class="wrap reveal">
+    <div class="moment-media"><img src="https://images.pexels.com/photos/33851784/pexels-photo-33851784.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Fireworks export product range"></div>
+    <div class="kicker">02 — 烟花</div>
+    <h2>十九大品类，<em class="accent-em">工厂直发</em>。</h2>
+    <p class="sub">全系列消费级与专业级烟花，浏阳制造，全球发货，可用您的品牌或我们的品牌。</p>
+    <div class="badges">
+      <span class="badge">风险等级 <b>1.4G</b></span>
+      <span class="badge">分类 <b>F2 / F3 / F4</b></span>
+      <span class="badge">起订量 <b>1个集装箱</b></span>
+      <span class="badge">包装 <b>贴牌 / 代工</b></span>
+    </div>
+    <div class="hero-cta" style="justify-content:flex-start; margin-top:36px;">
+      <a href="#catalog" class="pill-btn">查看产品目录</a>
+      <a href="#compare" class="text-link">对比出口方案 →</a>
+    </div>
+  </div>
+
+  <div class="wrap reveal" style="margin-top:90px;">
+    <div class="subbrand-head">烟花业务下的四大品牌</div>
+    <div class="subbrand-grid">
+      <div class="subbrand-card">
+        <div class="subbrand-media"><img src="https://images.pexels.com/photos/10483836/pexels-photo-10483836.jpeg?auto=compress&cs=tinysrgb&w=500" alt="After Dark Pyro export"></div>
+        <div class="subbrand-num">出口</div>
+        <h4>After Dark Pyro</h4>
+        <p>国际旗舰品牌，覆盖美洲、亚洲与欧洲。</p>
+      </div>
+      <div class="subbrand-card">
+        <div class="subbrand-media"><img src="https://images.pexels.com/photos/31965192/pexels-photo-31965192.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Xiangxing stage cold pyrotechnics"></div>
+        <div class="subbrand-num">舞台</div>
+        <h4>湘星(Xiangxing)</h4>
+        <p>浏阳最大的冷烟花工厂。</p>
+      </div>
+      <div class="subbrand-card">
+        <div class="subbrand-media"><img src="https://images.pexels.com/photos/10484094/pexels-photo-10484094.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Yinhe Class-A display shells"></div>
+        <div class="subbrand-num">甲级</div>
+        <h4>银河(Yinhe)</h4>
+        <p>专业礼花弹与喷泉类产品。</p>
+      </div>
+      <div class="subbrand-card">
+        <div class="subbrand-media"><img src="https://images.pexels.com/photos/15789990/pexels-photo-15789990.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Fengxin pyromusical design"></div>
+        <div class="subbrand-num">设计</div>
+        <h4>丰鑫(Fengxin)</h4>
+        <p>大型音乐焰火表演设计。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter chapter-alt" id="catalog">
+  <div class="wrap">
+    <div class="chapter-head reveal">
+      <div class="kicker">产品目录</div>
+      <h2>浏阳发货产品精选。</h2>
+      <p class="sub">完整规格表 — 单元尺寸、净药量、包装配置 — 可应要求提供。</p>
+    </div>
+    <div class="catalog-grid reveal">
+      <div class="catalog-card">
+        <img src="https://images.pexels.com/photos/31965192/pexels-photo-31965192.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Bangers and firecrackers">
+        <div class="catalog-card-info"><div class="cc-tag">CAT F2</div><h4>爆竹与鞭炮</h4><div class="cc-sub">雷管 · 组合装</div></div>
+      </div>
+      <div class="catalog-card">
+        <img src="https://images.pexels.com/photos/10484094/pexels-photo-10484094.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Rockets and missile cakes">
+        <div class="catalog-card-info"><div class="cc-tag">CAT F2</div><h4>火箭与导弹筒</h4><div class="cc-sub">16–300发配置</div></div>
+      </div>
+      <div class="catalog-card">
+        <img src="https://images.pexels.com/photos/10483836/pexels-photo-10483836.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Cakes and fountains">
+        <div class="catalog-card-info"><div class="cc-tag">CAT F4</div><h4>组合烟花与喷泉</h4><div class="cc-sub">地转 · 火轮</div></div>
+      </div>
+      <div class="catalog-card">
+        <img src="https://images.pexels.com/photos/15789990/pexels-photo-15789990.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Shells and special effects">
+        <div class="catalog-card-info"><div class="cc-tag">CAT F3/F4</div><h4>礼花弹与特效</h4><div class="cc-sub">彩带炮 · 冷烟花棒</div></div>
+      </div>
+      <div class="catalog-card">
+        <img src="images/drone_unit.jpg" alt="ECO performance drone unit">
+        <div class="catalog-card-info"><div class="cc-tag">表演无人机</div><h4>表演无人机整机</h4><div class="cc-sub">ECO系列 · 560克</div></div>
+      </div>
+      <div class="catalog-card">
+        <img src="https://images.pexels.com/photos/10484055/pexels-photo-10484055.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Formation show service">
+        <div class="catalog-card-info"><div class="cc-tag">表演无人机</div><h4>编队演出服务</h4><div class="cc-sub">编排设计 · 飞行执行</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="compliance">
+  <div class="wrap-wide">
+    <div class="chapter-head center reveal">
+      <div class="kicker">资质认证</div>
+      <h2>不只为发射而造，<em class="accent-em">更为通关而造</em>。</h2>
+      <p class="sub">每个产品出厂前都配有完整的分类与检测文件。</p>
+    </div>
+  </div>
+  <div class="marquee reveal">
+    <div class="marquee-track" id="trustTrack">
+      <div class="marquee-chip"><span class="mc-val">CE</span><span class="mc-lbl">F2 / F3 / F4</span></div>
+      <div class="marquee-chip"><span class="mc-val">AFSL</span><span class="mc-lbl">已认证</span></div>
+      <div class="marquee-chip"><span class="mc-val">甲级</span><span class="mc-lbl">生产许可证</span></div>
+      <div class="marquee-chip"><span class="mc-val">1.4G</span><span class="mc-lbl">风险等级</span></div>
+      <div class="marquee-chip"><span class="mc-val">GPS·北斗</span><span class="mc-lbl">四系统定位</span></div>
+      <div class="marquee-chip"><span class="mc-val">35+</span><span class="mc-lbl">年贸易经验</span></div>
+      <div class="marquee-chip"><span class="mc-val">美洲</span><span class="mc-lbl">出口市场</span></div>
+      <div class="marquee-chip"><span class="mc-val">欧洲</span><span class="mc-lbl">出口市场</span></div>
+      <div class="marquee-chip"><span class="mc-val">东南亚</span><span class="mc-lbl">已执飞项目</span></div>
+      <div class="marquee-chip"><span class="mc-val">新加坡</span><span class="mc-lbl">已执飞项目</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter chapter-alt" id="process">
+  <div class="wrap">
+    <div class="chapter-head reveal">
+      <div class="kicker">合作流程</div>
+      <h2>从咨询到交付，<em class="accent-em">只需三步</em>。</h2>
+      <p class="sub">无论是订一个集装箱，还是订一场演出，流程都一样。</p>
+    </div>
+    <div class="process-grid reveal">
+      <div class="process-card">
+        <div class="process-num">01</div>
+        <h4>告诉我们需求</h4>
+        <p>产品类别或演出构想、目标日期、大致预算。填一个表，得到真实回复。</p>
+        <div class="process-payoff">不走销售话术，只给直接答案。</div>
+      </div>
+      <div class="process-card">
+        <div class="process-num">02</div>
+        <h4>我们报价并确认</h4>
+        <p>固定价格、合规文件，无人机项目还会附上编排方案——都在您付款之前。</p>
+        <div class="process-payoff">先看到方案，再付款。</div>
+      </div>
+      <div class="process-card">
+        <div class="process-num">03</div>
+        <h4>生产或执行演出</h4>
+        <p>集装箱装柜并验货，或团队部署飞行——都按约定日期执行。</p>
+        <div class="process-payoff">接下来，就是开演时刻。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="compare">
+  <div class="wrap">
+    <div class="chapter-head reveal">
+      <div class="kicker">方案对比</div>
+      <h2>哪种方案<em class="accent-em">适合您</em>？</h2>
+      <p class="sub">四种合作方式 — 选择最匹配您项目的一种。</p>
+    </div>
+    <div class="compare-wrap reveal">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th><span class="plan-name">集装箱出口</span><span class="plan-desc">现货目录，零售端用您自己的品牌</span></th>
+            <th class="plan-highlight"><span class="plan-name">贴牌定制</span><span class="plan-desc">在现有产品线上定制包装与命名</span></th>
+            <th><span class="plan-name">无人机表演</span><span class="plan-desc">独立的编队灯光演出</span></th>
+            <th><span class="plan-name">烟花+无人机联动</span><span class="plan-desc">烟花终章+无人机编队，一支团队完成</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>适合对象</td>
+            <td>进口商与批发商</td>
+            <td class="plan-highlight">零售品牌、分销商</td>
+            <td>活动策划方、城市项目</td>
+            <td>旗舰开业、节庆活动</td>
+          </tr>
+          <tr>
+            <td>起订量</td>
+            <td>1个集装箱</td>
+            <td class="plan-highlight">1个集装箱</td>
+            <td>1场演出</td>
+            <td>1场演出</td>
+          </tr>
+          <tr>
+            <td>定制包装</td>
+            <td><span class="dash">—</span></td>
+            <td class="plan-highlight"><span class="check">✓</span></td>
+            <td><span class="dash">—</span></td>
+            <td><span class="dash">—</span></td>
+          </tr>
+          <tr>
+            <td>CE / AFSL 认证文件</td>
+            <td><span class="check">✓</span></td>
+            <td class="plan-highlight"><span class="check">✓</span></td>
+            <td><span class="dash">—</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>现场飞行团队</td>
+            <td><span class="dash">—</span></td>
+            <td class="plan-highlight"><span class="dash">—</span></td>
+            <td><span class="check blue">✓</span></td>
+            <td><span class="check blue">✓</span></td>
+          </tr>
+          <tr>
+            <td>编排设计</td>
+            <td><span class="dash">—</span></td>
+            <td class="plan-highlight"><span class="dash">—</span></td>
+            <td><span class="check blue">✓</span></td>
+            <td><span class="check blue">✓</span></td>
+          </tr>
+          <tr>
+            <td>烟花终章联动</td>
+            <td><span class="dash">—</span></td>
+            <td class="plan-highlight"><span class="dash">—</span></td>
+            <td><span class="dash">—</span></td>
+            <td><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>常规周期</td>
+            <td>4–6周</td>
+            <td class="plan-highlight">6–8周</td>
+            <td>2–4周</td>
+            <td>4–6周</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="chapter chapter-alt" id="gallery">
+  <div class="wrap-wide">
+    <div class="chapter-head reveal">
+      <div class="kicker">案例展示</div>
+      <h2>来自现场。</h2>
+    </div>
+    <div class="filmstrip reveal">
+      <img class="wide" src="images/drone_hero.jpg" alt="Drone light show and fireworks, Marina Bay Sands">
+      <img class="tall" src="images/drone_team_seasia.jpg" alt="Flight crew, Southeast Asia deployment">
+      <img class="wide" src="images/drone_westin.jpg" alt="Drone light show, Westin hotel">
+      <img class="tall" src="images/drone_campus_dragon.jpg" alt="Dragon-shaped drone formation">
+      <img class="wide" src="images/drone_daylight_array.jpg" alt="Daylight drone array rehearsal">
+      <img class="tall" src="https://images.pexels.com/photos/10484094/pexels-photo-10484094.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Fireworks aerial view">
+      <img class="wide" src="https://images.pexels.com/photos/9048649/pexels-photo-9048649.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Fireworks over harbor">
+      <img class="tall" src="https://images.pexels.com/photos/10483836/pexels-photo-10483836.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Fireworks over island">
+      <img class="wide" src="https://images.pexels.com/photos/15789990/pexels-photo-15789990.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Crowd watching fireworks">
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="contact">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div class="kicker">联系我们</div>
+        <h2>告诉我们您想点亮什么。</h2>
+        <p>发送产品需求、目标市场和大致数量 — 我们会回复真实报价，而不是一份宣传册。</p>
+        <div class="cline"><span class="k">公司</span><span class="v">南昌烟花实业有限公司</span></div>
+        <div class="cline"><span class="k">地址</span><span class="v">中国湖南省浏阳市将军路1号，邮编410300</span></div>
+        <div class="cline"><span class="k">邮箱</span><a class="v" href="mailto:qinshen@nanchangfireworks.com">qinshen@nanchangfireworks.com</a></div>
+        <div class="cline"><span class="k">电话</span><a class="v" href="tel:+8613407910219">+86 134 0791 0219</a></div>
+      </div>
+      <div class="reveal">
+        <form action="mailto:qinshen@nanchangfireworks.com" method="post" enctype="text/plain">
+          <div class="field-row">
+            <div class="field"><label>姓名</label><input type="text" name="name" required></div>
+            <div class="field"><label>公司</label><input type="text" name="company"></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>邮箱</label><input type="email" name="email" required></div>
+            <div class="field"><label>国家/市场</label><input type="text" name="market"></div>
+          </div>
+          <div class="field">
+            <label>意向内容</label>
+            <select name="interest">
+              <option>集装箱出口</option>
+              <option>贴牌定制</option>
+              <option>无人机表演</option>
+              <option>烟花+无人机联动</option>
+              <option>还不确定</option>
+            </select>
+          </div>
+          <div class="field"><label>详细需求</label><textarea name="message" rows="4" placeholder="产品类别、目标日期、数量、场地……"></textarea></div>
+          <button type="submit" class="submit-btn">发送咨询</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap-wide">
+    <div class="fmark"><b style="color:var(--ink)">After Dark Pyro</b> — 南昌烟花实业 · 中国湖南浏阳</div>
+    <div class="fmark">© <span id="yr"></span> · CE F2–F4级烟花认证 · 基于ECO平台的无人机表演</div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
+  }, {threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // mobile burger menu
+  const burgerBtn = document.getElementById('burgerBtn');
+  const navlinksEl = document.querySelector('.navlinks');
+  if (burgerBtn && navlinksEl) {
+    burgerBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      burgerBtn.classList.toggle('open');
+      navlinksEl.classList.toggle('mobile-open');
+    });
+    navlinksEl.querySelectorAll('a:not(.lang-menu a)').forEach(a => {
+      a.addEventListener('click', () => {
+        navlinksEl.classList.remove('mobile-open');
+        burgerBtn.classList.remove('open');
+      });
+    });
+    document.addEventListener('click', (e) => {
+      if (navlinksEl.classList.contains('mobile-open') && !navlinksEl.contains(e.target) && !burgerBtn.contains(e.target)) {
+        navlinksEl.classList.remove('mobile-open');
+        burgerBtn.classList.remove('open');
+      }
+    });
+  }
+
+  // language switcher
+  const langSwitch = document.getElementById('langSwitch');
+  const langTrigger = document.getElementById('langTrigger');
+  if (langSwitch && langTrigger) {
+    langTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      langSwitch.classList.toggle('open');
+    });
+    document.addEventListener('click', (e) => {
+      if (!langSwitch.contains(e.target)) langSwitch.classList.remove('open');
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') langSwitch.classList.remove('open');
+    });
+  }
+</script>
+
+</body>
+</html>
